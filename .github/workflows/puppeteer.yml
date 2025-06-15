@@ -1,0 +1,26 @@
+name: Puppeteer and Lighthouse
+
+on:
+  workflow_dispatch:  # Allows manual trigger from GitHub UI
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run main script
+        run: node scripts/main.mjs
+
+      - name: Archive artifacts
+        if: always()  # Run even if previous step fails
+        uses: actions/upload-artifact@v4
+        with:
+          name: output-artifacts
+          path: auto_*
+          if-no-files-found: warn
